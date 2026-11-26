@@ -28,6 +28,12 @@ def main():
     with open(out, "w", encoding="utf-8", newline="\n") as f:
         f.write(LINE + "\n")
     os.chmod(out, 0o644)
+    # Read back what the grader will read: fail loudly if the file on
+    # disk is not exactly the one line we validated above.
+    with open(out, "r", encoding="utf-8", newline="\n") as f:
+        written = f.read()
+    if written != LINE + "\n":
+        raise ValueError("entry file round-trip mismatch")
 
 
 if __name__ == "__main__":
